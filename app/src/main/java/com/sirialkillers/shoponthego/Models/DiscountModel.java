@@ -1,55 +1,30 @@
 package com.sirialkillers.shoponthego.Models;
 
 
-import android.arch.persistence.room.ColumnInfo;
-import android.arch.persistence.room.Entity;
-import android.arch.persistence.room.ForeignKey;
-import android.arch.persistence.room.Ignore;
-import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 
 import com.sirialkillers.shoponthego.Interfaces.IDiscount;
 
 import java.util.ArrayList;
 import java.util.Date;
 
-@Entity(tableName = "Discount")
-@ForeignKey(entity = ShopModel.class,parentColumns="shopId", childColumns ="shopId")
+
 public class DiscountModel extends ArrayList implements IDiscount, Parcelable{
-    @ColumnInfo(name="shopId")
     private String shopId;
-    @PrimaryKey
-    @NonNull
-    @ColumnInfo(name="discountid")
     private String discountId;
-    @ColumnInfo(name="discountPercentage")
     private double percentage;
-    @ColumnInfo(name="discountTitle")
     private String title;
-    @ColumnInfo(name="discountDescription")
     private String description;
-    //TODO typeConverter date-to-long
-    @ColumnInfo(name="expirationDate")
     private Date expirationDate;
 
     public DiscountModel(String shopId, String discountId, double percentage,
-                         String title, String description, Date expirationDate){
+                         String title, String description){
         this.shopId = shopId;
         this.discountId = discountId;
         this.percentage = percentage;
         this.title = title;
         this.description = description;
-        this.expirationDate=expirationDate;
-    }
-    @Ignore
-    public DiscountModel(String discountId){
-        this.discountId = discountId;
-        this.shopId = "";
-        this.percentage = 0;
-        this.title = "";
-        this.description = "";
     }
 
     @Override
@@ -86,36 +61,6 @@ public class DiscountModel extends ArrayList implements IDiscount, Parcelable{
         return expirationDate;
     }
 
-    public void setShopId(String shopId) {
-
-        this.shopId = shopId;
-    }
-
-    public void setDiscountId(String discountId) {
-
-        this.discountId = discountId;
-    }
-
-    public void setPercentage(double percentage) {
-
-        this.percentage = percentage;
-    }
-
-    public void setTitle(String title) {
-
-        this.title = title;
-    }
-
-    public void setDescription(String description) {
-
-        this.description = description;
-    }
-
-    public void setExpirationDate(Date expirationDate) {
-
-        this.expirationDate = expirationDate;
-    }
-
     protected DiscountModel(Parcel in) {
         shopId = in.readString();
         discountId = in.readString();
@@ -128,7 +73,6 @@ public class DiscountModel extends ArrayList implements IDiscount, Parcelable{
 
     @Override
     public int describeContents() {
-
         return 0;
     }
 
@@ -154,6 +98,30 @@ public class DiscountModel extends ArrayList implements IDiscount, Parcelable{
             return new DiscountModel[size];
         }
     };
+
+    public void setShopId(String shopId) {
+        this.shopId = shopId;
+    }
+
+    public void setDiscountId(String discountId) {
+        this.discountId = discountId;
+    }
+
+    public void setPercentage(double percentage) {
+        this.percentage = percentage;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
 }
 
 

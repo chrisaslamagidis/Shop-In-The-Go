@@ -9,9 +9,6 @@ import android.support.test.espresso.intent.rule.IntentsTestRule;
 import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 
-import com.sirialkillers.shoponthego.Maps_Related_Activities.MapsActivity;
-import com.sirialkillers.shoponthego.Shop_Related_Activities.ShopsListView;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

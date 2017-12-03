@@ -9,7 +9,7 @@
     android:paddingLeft="16dp"
     android:paddingRight="16dp"
     android:paddingTop="16dp"
-    tools:context=".Shop_Related_Activities.ShopsListView" >
+    tools:context=".ShopsListView" >
 
     <SearchView
         android:id="@+id/shopsSearchView"

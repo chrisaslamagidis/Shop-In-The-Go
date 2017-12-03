@@ -1,13 +1,12 @@
 package com.sirialkillers.shoponthego;
 
-import com.sirialkillers.shoponthego.Maps_Related_Activities.Position;
 import com.sirialkillers.shoponthego.Models.ShopModel;
-import com.sirialkillers.shoponthego.Shop_Related_Activities.ListOfShops;
 
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import static org.junit.Assert.assertEquals;
 

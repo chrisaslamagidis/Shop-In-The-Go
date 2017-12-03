@@ -1,7 +1,5 @@
 package com.sirialkillers.shoponthego;
 
-import com.sirialkillers.shoponthego.User_based_Activities.SignUpValidation;
-
 import org.junit.Test;
 
 import static org.junit.Assert.*;

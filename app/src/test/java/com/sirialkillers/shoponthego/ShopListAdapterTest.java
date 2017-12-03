@@ -2,9 +2,7 @@ package com.sirialkillers.shoponthego;
 
 import android.content.Context;
 
-import com.sirialkillers.shoponthego.Maps_Related_Activities.Position;
 import com.sirialkillers.shoponthego.Models.ShopModel;
-import com.sirialkillers.shoponthego.Shop_Related_Activities.ShopListAdapter;
 
 import org.junit.Before;
 import org.junit.Test;
