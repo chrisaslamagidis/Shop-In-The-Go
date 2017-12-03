@@ -5,23 +5,6 @@
     <string name="ok_label">OK</string>
     <string name="dismiss_label">Dismiss</string>
     <string name="clear_all_label">Clear all</string>
-    <string name="radius_text">Your current radius is: 750 meters.</string>
-    <string name="Open">Open</string>
-    <string name="Close">Close</string>
-    <string name="my_desires">My Desires</string>
-    <string name="my_wishlist">My Wishlist</string>
-    <string name="saved_discounts">Saved Discounts</string>
-    <string name="saved_offers">Saved Offers</string>
-    <string name="settings">Settings</string>
-    <string name="logout">Logout</string>
-    <string name="about_us">About Us</string>
-    <string name="enter_your_email">Enter your Email</string>
-    <string name="email">Email</string>
-    <string name="enter_your_password">Enter your Password</string>
-    <string name="password">Password</string>
-    <string name="you_don_t_have_an_account_sign_up">You don\'t have an account? Sign Up!</string>
-    <string name="login">LOGIN</string>
-    <string name="loggin_in">Loggin in...</string>
 
     <string-array name="productCategories">
         <item>Accessories</item>

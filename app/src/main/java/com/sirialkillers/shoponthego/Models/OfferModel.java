@@ -10,6 +10,7 @@ import java.util.List;
 /**
  * @author Ioakeim James Theologou
  * @version 16/10/2017
+ * TODO: Create a test class for this model.
  *
  */
 public class OfferModel extends ArrayList implements IOffer{
@@ -28,14 +29,6 @@ public class OfferModel extends ArrayList implements IOffer{
         this.description = description;
 
     }
-
-    public OfferModel(String shopId){
-        this.shopId = shopId;
-        this.offerId = "";
-        this.title="";
-        this.description = "";
-    }
-
     @Override
     public String getShopId() {
 
@@ -73,32 +66,26 @@ public class OfferModel extends ArrayList implements IOffer{
     }
 
     public void setShopId(String shopId) {
-
         this.shopId = shopId;
     }
 
     public void setOfferId(String offerId) {
-
         this.offerId = offerId;
     }
 
     public void setTitle(String title) {
-
         this.title = title;
     }
 
     public void setDescription(String description) {
-
         this.description = description;
     }
 
     public void setExpirationDate(Date expirationDate) {
-
         this.expirationDate = expirationDate;
     }
 
     public void setProducts(List<IProduct> products) {
-
         this.products = products;
     }
 }
