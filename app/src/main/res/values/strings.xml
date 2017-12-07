@@ -22,6 +22,22 @@
     <string name="you_don_t_have_an_account_sign_up">You don\'t have an account? Sign Up!</string>
     <string name="login">LOGIN</string>
     <string name="loggin_in">Loggin in...</string>
+    <string name="singin_up_and_loggin_in">Singin up and loggin in</string>
+
+    <string name="verify_your_password">Verify your Password</string>
+    <string name="i_already_have_an_account">I already have an account</string>
+    <string name="username">Username</string>
+    <string name="register_and_login">Register and Login</string>
+    <string name="submitting_your_shop">Submitting your Shop...</string>
+    <string name="example_electronics_foods">Example: Electronics, Foods</string>
+
+    <string name="select_the_shops_categories">Select the Shops Categories</string>
+    <string name="select_your_categories">Select your categories</string>
+    <string name="select_the_shops_address">Select the Shops Address</string>
+    <string name="titleshop">Title</string>
+    <string name="your_address_will_show_here">Your Address will show here</string>
+    <string name="add_a_photo">Add a photo</string>
+    <string name="submit_your_shop">Submit your Shop:</string>
 
     <string-array name="productCategories">
         <item>Accessories</item>
@@ -34,28 +50,31 @@
         <item>Furniture</item>
         <item>Consumables</item>
         <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
-        <item>Furniture</item>
-        <item>Consumables</item>
     </string-array>
+
+    <string-array name="productACategories">
+        <item>Clothing, Shoes and Accessories</item>
+        <item>Business and Industrial</item>
+        <item>Toys and Hobbies</item>
+        <item>Books</item>
+        <item>Camping Accessories</item>
+        <item>Collectibles and Art</item>
+        <item>Computer goods</item>
+        <item>Decoration tools and equipment</item>
+        <item>Electronics</item>
+        <item>Fast Foods</item>
+        <item>Restaurant Foods</item>
+        <item>Furniture</item>
+        <item>Kitchen Accessories</item>
+        <item>Pet Supplies</item>
+        <item>Health and Beauty</item>
+        <item>Music</item>
+        <item>Motors</item>
+        <item>Pottery and Glass</item>
+        <item>Phones and Accessories</item>
+        <item>Sporting goods</item>
+        <item>Coins and Paper Money</item>
+        <item>Sports Memorabilia, Fan Shop and Sports Cards</item>
+        <item>Video Games and Consoles</item>
+      </string-array>
 </resources>

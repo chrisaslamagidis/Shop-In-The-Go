@@ -40,7 +40,7 @@ public class ShopModel extends ArrayList implements IShop {
     @Ignore
     private List<IProduct> products;
     @Ignore
-    private List <ICategory> categories;
+    private List <CategoryModel> categories;
 
 
     public ShopModel(String id, String name, Position position){
@@ -142,7 +142,7 @@ public class ShopModel extends ArrayList implements IShop {
         this.products = products;
     }
 
-    public void setCategories(List<ICategory> categories) {
+    public void setCategories(List<CategoryModel> categories) {
 
         this.categories = categories;
     }

@@ -1,6 +1,7 @@
 package com.sirialkillers.shoponthego.User_based_Activities;
 
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Handler;
@@ -11,10 +12,12 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.sirialkillers.shoponthego.Controllers.AccountController;
 import com.sirialkillers.shoponthego.Maps_Related_Activities.MapsActivity;
@@ -24,6 +27,9 @@ import com.sirialkillers.shoponthego.R;
 import java.util.UUID;
 
 public class SignUpActivity extends AppCompatActivity {
+    /**
+     * Keep track of the sign up task to ensure we can cancel it if requested.
+     */
     SignUpValidation user;
     private UserRegisterTask mAuthTask = null;
     private ConstraintLayout mRegisterForm;
@@ -32,18 +38,21 @@ public class SignUpActivity extends AppCompatActivity {
     private EditText password;
     private EditText verifyPassword;
     ProgressBar mProgressView;
-    int loadtime = 2000; //2 seconds
+    TextView loadingTextView;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
         username = (EditText) findViewById(R.id.usernameEditText);
+        username.requestFocus();
         email = (EditText) findViewById(R.id.emailEditText);
         password = (EditText) findViewById(R.id.passwordEditText);
         verifyPassword = (EditText) findViewById(R.id.verifyPasswordEditText);
         Button registerAndLogin = (Button) findViewById(R.id.registerAndLoginButton);
         TextView haveAnAccount = (TextView) findViewById(R.id.goBackToLoginTextView);
+        loadingTextView = (TextView) findViewById(R.id.loadingTextView);
         mProgressView = (ProgressBar) findViewById(R.id.progressBar);
         mRegisterForm = (ConstraintLayout) findViewById(R.id.registerFormView);
         verifyPassword.setOnEditorActionListener(new TextView.OnEditorActionListener() {
@@ -72,7 +81,17 @@ public class SignUpActivity extends AppCompatActivity {
         });
     }
 
+    private void hideKeyboard(){
+        View view = this.getCurrentFocus();
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    /**
+     * Setting the sign up to work if every choice is valid
+     */
     private void attemptRegister() {
+        hideKeyboard();
         if (mAuthTask != null) {
             return;
         }
@@ -156,35 +175,17 @@ public class SignUpActivity extends AppCompatActivity {
 
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
-            Loading();
+
             mAuthTask = new UserRegisterTask(susername, semail, spassword);
+            mAuthTask.execute((Void) null);
         }
     }
 
 
-    private void goToLoginActivity() {
-        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
-        startActivity(intent);
-    }
 
-    /**
-     * Shows the progress UI and hides the registration form.
-     */
-    private void Loading() {
-        mProgressView.setVisibility(View.VISIBLE);
-        mRegisterForm.setVisibility(View.INVISIBLE);
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.i("loading ", "now");
-                Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
-                startActivity(intent);
 
-                mAuthTask.execute((Void) null);
 
-            }
-        }, loadtime);
-    }
+
 
     /**
      * Represents an asynchronous registration task used to authenticate
@@ -202,37 +203,65 @@ public class SignUpActivity extends AppCompatActivity {
             mPassword = password;
         }
 
+
+        /**
+         * Shows the progress UI and hides the registration form.
+         */
+        @Override
+        protected void onPreExecute() {
+            mProgressView.setVisibility(View.VISIBLE);
+            loadingTextView.setVisibility(View.VISIBLE);
+            mRegisterForm.setVisibility(View.INVISIBLE);
+        }
+
         @Override
         protected Boolean doInBackground(Void... params) {
-            AccountModel accountModel = new AccountModel(UUID.randomUUID().toString(),mUsername,mEmail,mPassword);
+
 
             try {
+                AccountModel accountModel = new AccountModel(UUID.randomUUID().toString(),mUsername,mEmail,mPassword);
                 AccountController accountController = new AccountController();
                 accountController.createAccount(accountModel);
-                onPostExecute(true);
             } catch (Exception e) {
+
                 return false;
             }
 
 
-            // TODO: register the new account here.
+
             return true;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
 
-            
             if (success) {
+                goToMapsActivity();
                 finish();
+            } else{
+                Toast.makeText(SignUpActivity.this, "Something went wrong please try again", Toast.LENGTH_SHORT).show();
+                mProgressView.setVisibility(View.INVISIBLE);
+                loadingTextView.setVisibility(View.INVISIBLE);
+                mRegisterForm.setVisibility(View.VISIBLE);
+                mAuthTask = null;
             }
         }
+
+
 
         @Override
         protected void onCancelled() {
             mAuthTask = null;
-            Loading();
         }
+    }
+    private void goToMapsActivity() {
+        Intent intent = new Intent(getApplicationContext(), MapsActivity.class);
+        startActivity(intent);
+        finish();
+    }
+    private void goToLoginActivity() {
+        Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

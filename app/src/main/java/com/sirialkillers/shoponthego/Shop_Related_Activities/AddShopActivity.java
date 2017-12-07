@@ -3,27 +3,30 @@ package com.sirialkillers.shoponthego.Shop_Related_Activities;
 
 import android.Manifest;
 import android.app.Activity;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Address;
-import android.media.Image;
 import android.net.Uri;
 
 import android.os.AsyncTask;
 import android.os.Build;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
+import android.support.constraint.ConstraintLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -37,14 +40,14 @@ import com.google.android.gms.maps.model.LatLngBounds;
 import com.sirialkillers.shoponthego.Controllers.ShopController;
 import com.sirialkillers.shoponthego.Maps_Related_Activities.Position;
 import com.sirialkillers.shoponthego.MenuActivity;
+import com.sirialkillers.shoponthego.Models.CategoryModel;
 import com.sirialkillers.shoponthego.Models.ShopModel;
 import com.sirialkillers.shoponthego.R;
 import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.EmptyStackException;
+import java.util.List;
 import java.util.UUID;
 
 
@@ -59,12 +62,15 @@ public class AddShopActivity extends AppCompatActivity {
     private ShopRegisterTask shopRegisterTask = null;
     private Place place;
     private Bitmap bitmap;
+    List<String> shopChosenCategoriesList = new ArrayList<String>();
     private final static LatLngBounds bounds = new LatLngBounds(new LatLng(34.875228,20.379639), new LatLng(41.695988,26.597900));
-    String sCategories;
+
     String[] categories;
     boolean[] checkedCategories;
     ArrayList<Integer> mShopCategories = new ArrayList<>();
-
+    ConstraintLayout constraintLayout ;
+    ProgressBar progressBar;
+    TextView loadingTextView;
     private final static int REQUEST_CAMERA = 1;
     private final static int SELECT_FILE = 0;
 
@@ -77,12 +83,16 @@ public class AddShopActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_shop);
 
         requestPermission();
+        shopChosenCategoriesList.clear();
+        constraintLayout = findViewById(R.id.constraintLayout);
+        progressBar = findViewById(R.id.progressBar);
+        loadingTextView=findViewById(R.id.loadingTextView);
 
         shopAddressTextView = (TextView) findViewById(R.id.addressTextView);
         shopCategoriesTextView = (TextView) findViewById(R.id.categoriesTextView);
 
         titleEditText = (EditText) findViewById(R.id.titleEditText);
-
+        titleEditText.requestFocus();
         shopImage = (ImageView) findViewById(R.id.shopPhotoImageView);
 
         categories = getResources().getStringArray(R.array.productCategories);
@@ -161,13 +171,15 @@ public class AddShopActivity extends AppCompatActivity {
             @Override
             public void onClick(DialogInterface dialog, int which) {
                 String categoriesString = "";
-                sCategories = "";
+
+                shopChosenCategoriesList.clear();
                 for (int i = 0; i < mShopCategories.size(); i++) {
                     categoriesString = categoriesString + categories[mShopCategories.get(i)];
-                    sCategories = categoriesString + categories[mShopCategories.get(i)];
+
+                    shopChosenCategoriesList.add(categories[mShopCategories.get(i)]);
                     if (i != mShopCategories.size() - 1) {
                         categoriesString = categoriesString + ", ";
-                        sCategories = sCategories + " ";
+
                     }
                 }
                 shopCategoriesTextView.setText(categoriesString);
@@ -186,6 +198,7 @@ public class AddShopActivity extends AppCompatActivity {
             public void onClick(DialogInterface dialog, int which) {
                 for (int i = 0; i < checkedCategories.length; i++) {
                     checkedCategories[i] = false;
+                    shopChosenCategoriesList.clear();
                     mShopCategories.clear();
                     shopCategoriesTextView.setText("");
                 }
@@ -197,6 +210,7 @@ public class AddShopActivity extends AppCompatActivity {
     }
 
     private void addPhotoClick() {
+
         final CharSequence[] items = {"Camera", "Gallery", "Cancel"};
         AlertDialog.Builder builder = new AlertDialog.Builder(AddShopActivity.this);
         builder.setTitle("Add Image");
@@ -275,9 +289,14 @@ public class AddShopActivity extends AppCompatActivity {
                 break;
         }
     }
+    private void hideKeyboard(){
+        View view = this.getCurrentFocus();
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
 
     private void attemptSubmitShop() {
-
+        hideKeyboard();
         if (shopRegisterTask != null) {
             return;
         }
@@ -327,9 +346,8 @@ public class AddShopActivity extends AppCompatActivity {
             // form field with an error.
             focusView.requestFocus();
         } else {
-            shopRegisterTask = new ShopRegisterTask(titleEditText.getText().toString(),shopLatLng,sCategories,bitmap, shopID);
-            Intent intent = new Intent(getApplicationContext(),MenuActivity.class);
-            startActivity(intent);
+            shopRegisterTask = new ShopRegisterTask(titleEditText.getText().toString(),shopLatLng,shopChosenCategoriesList,bitmap, shopID);
+            shopRegisterTask.execute((Void) null);
 
         }
     }
@@ -342,11 +360,11 @@ public class AddShopActivity extends AppCompatActivity {
 
         private String shopTitle;
         private LatLng shopLatLng;
-        private String shopCategories;
+        private List<String> shopCategories;
         private Bitmap bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.addphoto);
         private UUID shopID;
 
-        public ShopRegisterTask(String shopTitle, LatLng shopLatLng, String shopCategories,Bitmap bitmap, UUID shopID) {
+        public ShopRegisterTask(String shopTitle, LatLng shopLatLng, List<String> shopCategories,Bitmap bitmap, UUID shopID) {
             this.shopTitle = shopTitle;
             this.shopLatLng = shopLatLng;
             this.shopCategories = shopCategories;
@@ -355,26 +373,45 @@ public class AddShopActivity extends AppCompatActivity {
         }
 
         @Override
+        protected void onPreExecute() {
+            loadingTextView.setVisibility(View.VISIBLE);
+            progressBar.setVisibility(View.VISIBLE);
+            constraintLayout.setVisibility(View.INVISIBLE);
+           }
+
+        @Override
         protected Boolean doInBackground(Void... params) {
             try
             {
-            Position position = new Position(shopLatLng.latitude,shopLatLng.longitude);
-            ShopModel shopModel = new ShopModel(shopID.toString(),shopTitle,position);
-            //TODO: use  AddShop but it doesn't exist
+                List<CategoryModel> shopCategoriesModels = new ArrayList<>();
+                for(int i=0;i<shopCategories.size();i++){
+                    shopCategoriesModels.add(new CategoryModel(shopCategories.get(i)));
+                }
+                Position position = new Position(shopLatLng.latitude,shopLatLng.longitude);
+                ShopModel newShop = new ShopModel(shopID.toString(),shopTitle,position);
+                ShopController shopController = new ShopController();
+                shopController.create(newShop);
+                newShop.setCategories(shopCategoriesModels);
+
+
             } catch (Exception e){
 
+                return false;
             }
-        return true;
+
+            return true;
         }
 
         @Override
         protected void onPostExecute(final Boolean success) {
             if (success) {
-                Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
-                startActivity(intent);
+                goToMenuActivity();
 
             } else {
                 Toast.makeText(AddShopActivity.this, "Something went wrong!!! Try again", Toast.LENGTH_SHORT).show();
+                loadingTextView.setVisibility(View.INVISIBLE);
+                progressBar.setVisibility(View.INVISIBLE);
+                constraintLayout.setVisibility(View.VISIBLE);
             }
         }
 
@@ -382,5 +419,10 @@ public class AddShopActivity extends AppCompatActivity {
         protected void onCancelled() {
             shopRegisterTask = null;
         }
+    }
+    private void goToMenuActivity(){
+        Intent intent = new Intent(getApplicationContext(), MenuActivity.class);
+        startActivity(intent);
+        finish();
     }
 }

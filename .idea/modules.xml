@@ -3,9 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Shop-On-The-Go.iml" filepath="$PROJECT_DIR$/Shop-On-The-Go.iml" />
-      <module fileurl="file://B:\Desktop\Project\Shop-On-The-Go\Shop-On-The-Go.iml" filepath="B:\Desktop\Project\Shop-On-The-Go\Shop-On-The-Go.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
-      <module fileurl="file://B:\Desktop\Project\Shop-On-The-Go\app\app.iml" filepath="B:\Desktop\Project\Shop-On-The-Go\app\app.iml" />
     </modules>
   </component>
 </project>
